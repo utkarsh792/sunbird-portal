@@ -74,7 +74,7 @@ export interface TelemetryObject {
 }
 export interface TelemetryEventOptions {
   'context'?: ITelemetryContextData;
-  'object'?: TelemetryObject;
+  'object'?: TelemetryObject | any;
   'tags'?: Array<string>;
 }
 export interface ITelemetryEvent {
@@ -114,6 +114,7 @@ export interface IErrorEventInput {
 export interface IImpressionEventInput {
   'context': {
     'env': string;
+    'cdata'?: Array<object>;
   };
   'object'?: {
     'id': string;
@@ -132,8 +133,8 @@ export interface IInteractEventInput {
   'edata': IInteractEventEdata;
 }
 export interface IInteractEventObject {
-  'id': string;
-  'type': string;
+  'id'?: string;
+  'type'?: string;
   'ver'?: string;
   'rollup'?: {};
 }
