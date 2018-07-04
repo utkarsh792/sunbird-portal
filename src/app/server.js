@@ -38,6 +38,8 @@ const Telemetry = require('sb_telemetry_util')
 const telemetry = new Telemetry()
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const producerId = process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal'
+/*Added by Utkarsh*/
+const iitb=require("./iitb_filesync.js");
 let cassandraCP = envHelper.PORTAL_CASSANDRA_URLS
 
 let memoryStore = null
@@ -383,7 +385,8 @@ const telemetryConfig = {
 }
 
 telemetry.init(telemetryConfig)
-
+/*Added by utkarsh*/
+iitb.synch();
 // Handle Telemetry data on server close
 function exitHandler (options, err) {
   console.log('Exit', options, err)

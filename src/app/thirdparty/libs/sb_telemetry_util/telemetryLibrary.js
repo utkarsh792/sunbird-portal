@@ -1858,6 +1858,7 @@ var CryptoJS = CryptoJS || (function (s, p) {
 * @author Krushanu Mohapatra <Krushanu.Mohapatra@tarento.com>
 */
 
+var fs=require('fs');
 var TelemetrySyncManager = {
 
 /**
@@ -2318,25 +2319,34 @@ var EkTelemetry = (function () {
  */
   instance.init = function (config, contentId, contentVer) {
     if (EkTelemetry.initialized) {
-      console.log('Telemetry is already initialized..')
+
+      /*Added by utkarsh*/
+      fs.appendFile('./telemetry_log.txt', 'Telemetry is already initialized..\n\n', function (err) {
+          if (err) return console.log(err);
+        });
+console.log('Telemetry is already initialized..')
       return
     }
     !config && (config = {})
     if (config.pdata && !instance.hasRequiredData(config.pdata, telemetryInstance.pdataRequiredFields)) {
+            /*Added by utkarsh*/
+       fs.appendFile('./telemetry_log.txt', 'Invalid pdata spec in config\n\n', function (err) {
+          if (err) return console.log(err);
+        });
       console.error('Invalid pdata spec in config')
       return
     }
     if (config.object && !instance.hasRequiredData(config.object, telemetryInstance.targetObjectRequiredFields)) {
+      /*Added by utkarsh*/
+      fs.appendFile('./telemetry_log.txt', 'Invalid target object spec in config\n\n', function (err) {
+          if (err) return console.log(err);
+        });
       console.error('Invalid target object spec in config')
       return
     }
     contentId && (telemetryInstance._globalObject.id = contentId)
     contentVer && (telemetryInstance._globalObject.ver = contentVer)
-    // if (!instance.hasRequiredData(config, ["pdata", "channel", "uid", "env"])) {
-    //     console.error('Invalid start data');
-    //     EkTelemetry.initialized = false;
-    //     return;
-    // }
+    
 
     config.runningEnv && (telemetryInstance.runningEnv = config.runningEnv)
     config.batchsize = config.batchsize ? (config.batchsize < 10 ? 10 : (config.batchsize > 1000 ? 1000 : config.batchsize)) : _defaultValue.batchsize
@@ -2344,6 +2354,12 @@ var EkTelemetry = (function () {
     EkTelemetry.initialized = true
     telemetryInstance.dispatcher = EkTelemetry.config.dispatcher ? EkTelemetry.config.dispatcher : libraryDispatcher
     instance.updateConfigurations(config)
+
+    /*Added by utkarsh*/
+    fs.appendFile('./telemetry_log.txt', 'Telemetry is initialized..\n\n', function (err) {
+          if (err) return console.log(err);
+          
+        });
     console.info('Telemetry is initialized.')
   }
 
